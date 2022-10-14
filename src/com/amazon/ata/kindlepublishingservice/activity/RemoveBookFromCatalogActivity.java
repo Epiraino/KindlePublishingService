@@ -10,6 +10,7 @@ public class RemoveBookFromCatalogActivity {
     @Inject
     RemoveBookFromCatalogActivity() {}
     public RemoveBookFromCatalogResponse execute(RemoveBookFromCatalogRequest removeBookFromCatalogRequest) {
+
         return null;
     }
 }
