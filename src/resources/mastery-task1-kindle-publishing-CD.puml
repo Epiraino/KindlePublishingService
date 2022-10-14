@@ -13,7 +13,7 @@ GetBookActivity -> RecommendationsServiceClient
 SubmitBookForPublishingActivity -> PublishingStatusDao
 
 class RemoveBookFromCatalogActivity {
-
++ execute(RemoveBookFromCatalogRequest request): RemoveBookFromCatalogResponse
 }
 
 class CatalogDao {
@@ -40,12 +40,18 @@ class GetBookActivity {
 }
 
 class SubmitBookForPublishingActivity {
++ execute(SubmitBookForPublishingRequest request): SubmitBookForPublishingResponse
 }
 
 class RecommendationsServiceClient {
 }
 
 class PublishingStatusItem {
+
+@DynamoDBHashKey publishingRecordId: String
+@DynamoDBRangeKey status: PublishingRecordStatus
+statusMessage: String
+bookId: String
 }
 
 class BookNotFoundException {
