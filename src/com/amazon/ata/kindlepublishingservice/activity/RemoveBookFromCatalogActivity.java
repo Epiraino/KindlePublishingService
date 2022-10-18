@@ -19,6 +19,7 @@ public class RemoveBookFromCatalogActivity {
     }
     public RemoveBookFromCatalogResponse execute(RemoveBookFromCatalogRequest removeBookFromCatalogRequest) {
         CatalogItemVersion catalogItem = catalogDao.removeBookFromCatalog(removeBookFromCatalogRequest.getBookId());
+
         Book book = CatalogItemConverter.toBook(catalogItem);
         return new RemoveBookFromCatalogResponse();
     }
