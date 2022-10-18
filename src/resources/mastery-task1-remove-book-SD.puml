@@ -2,7 +2,7 @@ PARTICIPANTS: use this file for creating the remove book from catalog diagram in
 @startuml
 RemoveBookFromCatalogActivity -> RemoveBookFromCatalogResponse: execute
 
-CatalogDao -> RemoveBookFromCatalogActivity: removeBookFromCatalog
+CatalogDao <- RemoveBookFromCatalogActivity: removeBookFromCatalog
 RemoveBookFromCatalogResponse -> BookNotFoundException
 
 

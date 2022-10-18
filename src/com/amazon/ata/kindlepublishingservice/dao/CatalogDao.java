@@ -42,6 +42,15 @@ public class CatalogDao {
         return book;
     }
 
+    public CatalogItemVersion removeBookFromCatalog(String bookId) {
+        CatalogItemVersion book = getLatestVersionOfBook(bookId);
+        if (book == null || book.isInactive()) {
+            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
+        }
+        book.setInactive(true);
+        return book;
+
+    }
 
 
     // Returns null if no version exists for the provided bookId
