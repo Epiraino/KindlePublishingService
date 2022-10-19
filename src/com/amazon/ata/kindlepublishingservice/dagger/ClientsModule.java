@@ -18,4 +18,7 @@ public class ClientsModule {
         RecommendationsService recommendationsService) {
         return new RecommendationsServiceClient(recommendationsService);
     }
+
+
+
 }

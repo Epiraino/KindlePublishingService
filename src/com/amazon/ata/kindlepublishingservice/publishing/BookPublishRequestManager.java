@@ -2,13 +2,15 @@ package com.amazon.ata.kindlepublishingservice.publishing;
 
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
 
+import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
 public class BookPublishRequestManager {
-    private Queue<BookPublishRequest> bookPublishRequests = new LinkedList<>();
+    private Queue<BookPublishRequest> bookPublishRequests;
 
+    @Inject
     public BookPublishRequestManager(Queue<BookPublishRequest> bookPublishRequests) {
         this.bookPublishRequests = bookPublishRequests;
     }

@@ -53,6 +53,17 @@ public class CatalogDao {
 
     }
 
+    public CatalogItemVersion validateBookExists(String bookId){
+
+        CatalogItemVersion book = getLatestVersionOfBook(bookId);
+        if (book == null) {
+            throw new BookNotFoundException(String.format("No book found for id: %s", bookId));
+        }
+
+        return book;
+
+    }
+
 
     // Returns null if no version exists for the provided bookId
     private CatalogItemVersion getLatestVersionOfBook(String bookId) {
