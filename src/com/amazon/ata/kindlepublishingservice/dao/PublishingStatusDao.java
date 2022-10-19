@@ -3,12 +3,18 @@ package com.amazon.ata.kindlepublishingservice.dao;
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.PublishingStatusItem;
 import com.amazon.ata.kindlepublishingservice.enums.PublishingRecordStatus;
 import com.amazon.ata.kindlepublishingservice.exceptions.PublishingStatusNotFoundException;
+import com.amazon.ata.kindlepublishingservice.models.PublishingStatusRecord;
 import com.amazon.ata.kindlepublishingservice.utils.KindlePublishingUtils;
 
+import com.amazon.ata.recommendationsservice.types.BookGenre;
+import com.amazon.ata.recommendationsservice.types.BookRecommendation;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -29,7 +35,22 @@ public class PublishingStatusDao {
     public PublishingStatusDao(DynamoDBMapper dynamoDbMapper) {
         this.dynamoDbMapper = dynamoDbMapper;
     }
+    public List<PublishingStatusItem> getPublishingStatus(String publishingRecordId){
 
+        PublishingStatusItem statusRecord = new PublishingStatusItem();
+        statusRecord.setPublishingRecordId(publishingRecordId);
+
+        DynamoDBQueryExpression<PublishingStatusItem> queryExpression = new DynamoDBQueryExpression<PublishingStatusItem>()
+                .withHashKeyValues(statusRecord);
+        QueryResultPage<PublishingStatusItem> publishingQueryResults = dynamoDbMapper.queryPage(PublishingStatusItem.class, queryExpression);
+
+        List<PublishingStatusItem> recordList = publishingQueryResults.getResults();
+        if (recordList.isEmpty()){
+            throw new PublishingStatusNotFoundException("Publishing status not found");
+        }
+
+        return recordList;
+    }
     /**
      * Updates the publishing status table for the given publishingRecordId with the provided
      * publishingRecordStatus. If the bookId is provided it will also be stored in the record.
