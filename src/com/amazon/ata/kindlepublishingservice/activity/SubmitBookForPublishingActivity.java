@@ -9,6 +9,7 @@ import com.amazon.ata.kindlepublishingservice.dynamodb.models.PublishingStatusIt
 import com.amazon.ata.kindlepublishingservice.enums.PublishingRecordStatus;
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequest;
 
+import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequestManager;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,7 @@ public class SubmitBookForPublishingActivity {
     public SubmitBookForPublishingActivity(PublishingStatusDao publishingStatusDao) {
         this.publishingStatusDao = publishingStatusDao;
     }
+
 
     /**
      * Submits the book in the request for publishing.
