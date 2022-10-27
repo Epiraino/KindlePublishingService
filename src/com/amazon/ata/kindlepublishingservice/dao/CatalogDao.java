@@ -104,7 +104,7 @@ public class CatalogDao {
         System.out.println("VERSION NUMBER " + newVersion + "  " + existingBook.getVersion());
         dynamoDbMapper.save(existingBook);
         dynamoDbMapper.save(newBook);
-        //we done
+        //finally
         return newBook;
     }
 
