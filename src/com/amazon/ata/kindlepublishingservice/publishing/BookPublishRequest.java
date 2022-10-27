@@ -1,6 +1,7 @@
 package com.amazon.ata.kindlepublishingservice.publishing;
 
 import com.amazon.ata.recommendationsservice.types.BookGenre;
+import dagger.Provides;
 
 /**
  * Class representing a book publish request object.

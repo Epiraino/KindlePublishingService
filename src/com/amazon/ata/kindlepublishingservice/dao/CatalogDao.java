@@ -1,5 +1,6 @@
 package com.amazon.ata.kindlepublishingservice.dao;
 
+import com.amazon.ata.kindlepublishingservice.converters.CatalogItemConverter;
 import com.amazon.ata.kindlepublishingservice.dynamodb.models.CatalogItemVersion;
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
 import com.amazon.ata.kindlepublishingservice.publishing.KindleFormattedBook;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 public class CatalogDao {
 
     private final DynamoDBMapper dynamoDbMapper;
+    private KindlePublishingUtils kindlePublishingUtils = new KindlePublishingUtils();
 
     /**
      * Instantiates a new CatalogDao object.
@@ -62,6 +64,47 @@ public class CatalogDao {
 
         return book;
 
+    }
+
+    public CatalogItemVersion createOrUpdateBook(KindleFormattedBook kindleFormattedBook){
+        CatalogItemVersion catalogItemVersion = new CatalogItemVersion();
+
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!createorupdate reached!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
+        if (kindleFormattedBook.getBookId() == null){
+            String newBookId = kindlePublishingUtils.generateBookId();
+            catalogItemVersion.setBookId(newBookId);
+            System.out.println("THIS IS THE BOOK ID  " + catalogItemVersion.getBookId());
+            System.out.println("THIS IS THE BOOK ID  " + newBookId);
+            catalogItemVersion.setAuthor(kindleFormattedBook.getAuthor());
+            catalogItemVersion.setGenre(kindleFormattedBook.getGenre());
+            catalogItemVersion.setText(kindleFormattedBook.getText());
+            catalogItemVersion.setAuthor(kindleFormattedBook.getAuthor());
+            catalogItemVersion.setTitle(kindleFormattedBook.getTitle());
+            catalogItemVersion.setVersion(1);
+
+            dynamoDbMapper.save(catalogItemVersion);
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!saved!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
+            return catalogItemVersion;
+        }
+        validateBookExists(kindleFormattedBook.getBookId());
+        CatalogItemVersion existingBook = getLatestVersionOfBook(kindleFormattedBook.getBookId());
+        CatalogItemVersion newBook = getBookFromCatalog(kindleFormattedBook.getBookId());
+        int version = existingBook.getVersion();
+
+
+        int newVersion = version + 1;
+        existingBook.setInactive(true);
+        newBook.setTitle(kindleFormattedBook.getTitle());
+        newBook.setAuthor(kindleFormattedBook.getAuthor());
+        newBook.setGenre(kindleFormattedBook.getGenre());
+        newBook.setText(kindleFormattedBook.getText());
+        newBook.setAuthor(kindleFormattedBook.getAuthor());
+        newBook.setBookId(kindleFormattedBook.getBookId());
+        newBook.setVersion(newVersion);
+        System.out.println("VERSION NUMBER " + newVersion + "  " + existingBook.getVersion());
+        dynamoDbMapper.save(existingBook);
+        dynamoDbMapper.save(newBook);
+        return newBook;
     }
 
 

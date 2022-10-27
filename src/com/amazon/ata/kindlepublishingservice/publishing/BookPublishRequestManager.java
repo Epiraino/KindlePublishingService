@@ -1,30 +1,23 @@
 package com.amazon.ata.kindlepublishingservice.publishing;
 
 import com.amazon.ata.kindlepublishingservice.exceptions.BookNotFoundException;
+import dagger.Provides;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
+@Singleton
 public class BookPublishRequestManager {
-    private Queue<BookPublishRequest> bookPublishRequests;
+    private Queue<BookPublishRequest> bookPublishRequests = new LinkedList<>();
 
-    @Inject
-    public BookPublishRequestManager(Queue<BookPublishRequest> bookPublishRequests) {
-        this.bookPublishRequests = bookPublishRequests;
-    }
-
-    public Queue<BookPublishRequest> getBookPublishRequests() {
-        return bookPublishRequests;
-    }
-
-    public void setBookPublishRequests(Queue<BookPublishRequest> bookPublishRequests) {
-        this.bookPublishRequests = bookPublishRequests;
-    }
+    public BookPublishRequestManager() {}
 
     public void addBookPublishRequest(BookPublishRequest bookPublishRequest){
         bookPublishRequests.add(bookPublishRequest);
+        System.out.println("request added " + bookPublishRequest.toString());
     }
 
     public BookPublishRequest getBookPublishRequestToProcess(){

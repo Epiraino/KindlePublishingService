@@ -38,9 +38,10 @@ public class SubmitBookForPublishingActivity {
      * @param publishingStatusDao PublishingStatusDao to access the publishing status table.
      */
     @Inject
-    public SubmitBookForPublishingActivity(PublishingStatusDao publishingStatusDao, CatalogDao catalogDao) {
+    public SubmitBookForPublishingActivity(PublishingStatusDao publishingStatusDao, CatalogDao catalogDao, BookPublishRequestManager bookPublishRequestManager) {
         this.publishingStatusDao = publishingStatusDao;
         this.catalogDao = catalogDao;
+        this.bookPublishRequestManager = bookPublishRequestManager;
     }
 
 
@@ -58,23 +59,23 @@ public class SubmitBookForPublishingActivity {
 
         // TODO: If there is a book ID in the request, validate it exists in our catalog
         if(bookPublishRequest.getBookId() != null){
-            CatalogItemVersion item = catalogDao.validateBookExists(bookPublishRequest.getBookId());
+           catalogDao.validateBookExists(bookPublishRequest.getBookId());
         }
 
 
         // TODO: Submit the BookPublishRequest for processing
-        bookPublishRequestManager = new BookPublishRequestManager(new LinkedList<>());
-                bookPublishRequestManager.addBookPublishRequest(bookPublishRequest);
 
+
+                bookPublishRequestManager.addBookPublishRequest(bookPublishRequest);
+//
                 publishingStatusDao.setPublishingStatus(bookPublishRequest.getPublishingRecordId(), PublishingRecordStatus.QUEUED,
                 bookPublishRequest.getBookId());
 
-        BookPublishRequest que = bookPublishRequestManager.getBookPublishRequestToProcess();
-        publishingStatusDao.setPublishingStatus(que.getPublishingRecordId(),PublishingRecordStatus.SUCCESSFUL,
-                bookPublishRequest.getBookId());
+//        BookPublishRequest que = bookPublishRequestManager.getBookPublishRequestToProcess();
+
 
         return               SubmitBookForPublishingResponse.builder()
-                        .withPublishingRecordId(que.getPublishingRecordId())
+                        .withPublishingRecordId(bookPublishRequest.getPublishingRecordId())
                         .build();
     }
 }

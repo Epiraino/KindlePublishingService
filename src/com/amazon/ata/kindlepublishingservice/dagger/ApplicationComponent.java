@@ -5,6 +5,8 @@ import com.amazon.ata.kindlepublishingservice.activity.GetPublishingStatusActivi
 import com.amazon.ata.kindlepublishingservice.activity.RemoveBookFromCatalogActivity;
 import com.amazon.ata.kindlepublishingservice.activity.SubmitBookForPublishingActivity;
 import com.amazon.ata.kindlepublishingservice.publishing.BookPublishRequestManager;
+import com.amazon.ata.kindlepublishingservice.publishing.BookPublishTask;
+import com.amazon.ata.kindlepublishingservice.publishing.BookPublisher;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -13,7 +15,7 @@ import javax.inject.Singleton;
 @Component(modules = {
         ClientsModule.class,
         DataAccessModule.class,
-        PublishingModule.class
+        PublishingModule.class,
 })
 public interface ApplicationComponent {
 
@@ -26,6 +28,10 @@ public interface ApplicationComponent {
     SubmitBookForPublishingActivity provideSubmitBookForPublishingActivity();
 
     ATAKindlePublishingServiceManager provideATAKindlePublishingServiceManager();
+
+
+
+
 
 
 
